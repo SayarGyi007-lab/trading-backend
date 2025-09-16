@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/authentication";
 import { asyncHandler } from "../utils/asyncHandler";
 import prisma from "../prisma/client";
@@ -195,3 +195,23 @@ export const getOrdersByUserId = asyncHandler(async (req: AuthRequest, res: Resp
     res.status(403);
     throw new Error("Unauthorized: Access denied");
 });
+
+export const getAllOrders = asyncHandler(async(req: Request, res: Response) => {
+    const orders = await prisma.orders.findMany({
+      include: {
+        product: { select: { name: true } },
+        order_type: { select: { name: true } },
+        user: { select: { user_id: true, name: true, email: true } },
+      },
+      orderBy: {
+        timestamp: "desc",
+      },
+    });
+  
+    if (!orders.length) {
+      res.status(404);
+      throw new Error("No orders found");
+    }
+  
+    res.status(200).json({ count: orders.length, orders });
+  });

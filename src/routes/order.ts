@@ -8,6 +8,7 @@ route.post("/create",protect,userOnly,createOrder)
 route.delete("/delete/:orderId", protect, deleteOrder);
 route.put("/update/:orderId", protect, updateOrder);
 route.get("/user/:userId", protect, getOrdersByUserId);
+route.get("/")
 
 
 
