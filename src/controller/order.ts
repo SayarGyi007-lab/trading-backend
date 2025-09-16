@@ -213,5 +213,5 @@ export const getAllOrders = asyncHandler(async(req: Request, res: Response) => {
       throw new Error("No orders found");
     }
   
-    res.status(200).json({ count: orders.length, orders });
+    res.status(200).json({ orders });
   });
