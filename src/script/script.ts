@@ -8,7 +8,7 @@ const createAdmin = async()=>{
     try {
         const adminEmail = process.env.ADMIN_EMAIL!
         const adminPassword = process.env.ADMIN_PASSWORD!
-        const phone = 123456789
+        const phone = "0935632355"
 
         const existed = await prisma.user.findUnique({
             where: { email: adminEmail },
@@ -19,10 +19,8 @@ const createAdmin = async()=>{
             return;
           }
         
-          // Hash password
           const hashedPassword = await bcrypt.hash(adminPassword, 10);
         
-          // Create super admin
           await prisma.user.create({
             data: {
               name: "Admin",
@@ -33,7 +31,7 @@ const createAdmin = async()=>{
             },
           });
         
-          console.log("Super admin successfully created 🎉");
+          console.log("Super admin successfully created ");
     } catch (err) {
         console.error("Error creating super admin:", err)
     }

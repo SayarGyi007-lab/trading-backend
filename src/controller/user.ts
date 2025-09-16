@@ -9,7 +9,7 @@ interface IUser {
     name: string;
     email: string;
     password: string;
-    phone: number; 
+    phone: string; 
   }
 
 export const userRegister = asyncHandler(async(req:Request<{}, {}, IUser>, res:Response)=>{
@@ -18,8 +18,8 @@ export const userRegister = asyncHandler(async(req:Request<{}, {}, IUser>, res:R
         res.status(400)
         throw new Error("All fields are required")
     }
-
-    const existed = await prisma.user.findUnique({where: {email}})
+    
+    const existed = await prisma.user.findFirst({where: {email}})
 
     if(existed){
         res.status(409)

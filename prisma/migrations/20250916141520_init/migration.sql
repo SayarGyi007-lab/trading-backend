@@ -1,53 +1,17 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "public"."UserRole" AS ENUM ('USER', 'ADMIN');
 
-  - You are about to drop the `Matching_table` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Orders` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Orders_type` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Product` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "public"."Matching_table" DROP CONSTRAINT "Matching_table_buyer_user_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "public"."Matching_table" DROP CONSTRAINT "Matching_table_product_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "public"."Matching_table" DROP CONSTRAINT "Matching_table_seller_user_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "public"."Orders" DROP CONSTRAINT "Orders_order_type_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "public"."Orders" DROP CONSTRAINT "Orders_product_id_fkey";
-
--- DropForeignKey
-ALTER TABLE "public"."Orders" DROP CONSTRAINT "Orders_user_id_fkey";
-
--- DropTable
-DROP TABLE "public"."Matching_table";
-
--- DropTable
-DROP TABLE "public"."Orders";
-
--- DropTable
-DROP TABLE "public"."Orders_type";
-
--- DropTable
-DROP TABLE "public"."Product";
-
--- DropTable
-DROP TABLE "public"."User";
+-- CreateEnum
+CREATE TYPE "public"."OrderTypeEnum" AS ENUM ('BUY', 'SELL');
 
 -- CreateTable
 CREATE TABLE "public"."user" (
     "user_id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" INTEGER NOT NULL,
+    "phone" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "role" "public"."UserRole" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("user_id")
 );
@@ -88,6 +52,7 @@ CREATE TABLE "public"."matching_table" (
     "buyer_user_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
+    "buy_price" DECIMAL(65,30),
     "volume" INTEGER NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -96,6 +61,9 @@ CREATE TABLE "public"."matching_table" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "public"."user"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "product_name_key" ON "public"."product"("name");
 
 -- AddForeignKey
 ALTER TABLE "public"."orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."user"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
