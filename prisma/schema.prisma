@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User{
+  user_id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  phone Int
+  password String
+  role      UserRole @default(USER)
+
+  orders Orders[] @relation("User")
+
+  sales Matching_table[] @relation("SellerUser")
+
+  purchases Matching_table[] @relation("BuyerUser")
+
+  @@map("user")
+}
+
+enum OrderTypeEnum {
+  BUY
+  SELL
+}
+
+model Orders_type{
+  order_type_id Int @id @default(autoincrement())
+  name OrderTypeEnum
+
+  orders Orders[] @relation("Orders_type")
+
+  @@map("orders_type")
+}
+
+model Orders{
+  order_id Int @id @default(autoincrement())
+  user_id Int
+  user User @relation("User",fields: [user_id],references: [user_id])
+  product_id Int
+  product Product @relation("Product",fields: [product_id],references: [product_id])
+  order_type_id Int
+  order_type Orders_type @relation("Orders_type",fields: [order_type_id],references: [order_type_id])
+  price Decimal
+  volume Int
+  timestamp DateTime @default(now())
+
+  @@map("orders")
+}
+
+model Product{
+  product_id Int @id @default(autoincrement())
+  name String @unique
+
+  orders Orders[] @relation("Product")
+
+  matching_table Matching_table[] @relation("Product")
+
+  @@map("product")
+}
+
+model Matching_table{
+  matching_id Int @id @default(autoincrement())
+  seller_user_id Int
+  seller  User    @relation("SellerUser", fields: [seller_user_id], references: [user_id])
+  buyer_user_id  Int
+  buyer   User    @relation("BuyerUser", fields: [buyer_user_id], references: [user_id])
+  product_id     Int
+  product Product @relation("Product",fields: [product_id], references: [product_id])
+  price          Decimal  
+  buy_price      Decimal?
+  volume         Int
+  timestamp      DateTime @default(now())
+
+  @@map("matching_table")
+}

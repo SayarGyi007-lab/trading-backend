@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authentication_1 = require("../middlewares/authentication");
+const role_1 = require("../middlewares/role");
+const product_1 = require("../controller/product");
+const route = (0, express_1.Router)();
+route.post("/add", authentication_1.protect, role_1.adminOnly, product_1.addProduct);
+route.delete('/delete/:product_id', authentication_1.protect, role_1.adminOnly, product_1.deleteProduct);
+route.get("/", product_1.getAllProduct);
+exports.default = route;

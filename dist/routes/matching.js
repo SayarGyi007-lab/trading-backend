@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authentication_1 = require("../middlewares/authentication");
+const role_1 = require("../middlewares/role");
+const matching_1 = require("../controller/matching");
+const route = (0, express_1.Router)();
+route.get("/", authentication_1.protect, role_1.adminOnly, matching_1.getAllMatchings);
+route.get("/matchings", authentication_1.protect, matching_1.getUserMatching);
+exports.default = route;
