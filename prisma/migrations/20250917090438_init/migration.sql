@@ -4,6 +4,9 @@ CREATE TYPE "public"."UserRole" AS ENUM ('USER', 'ADMIN');
 -- CreateEnum
 CREATE TYPE "public"."OrderTypeEnum" AS ENUM ('BUY', 'SELL');
 
+-- CreateEnum
+CREATE TYPE "public"."UnitEnum" AS ENUM ('Kilogram', 'Item', 'Liter', 'Meter', 'Bag', 'Pack', 'Centimeter', 'Gram');
+
 -- CreateTable
 CREATE TABLE "public"."user" (
     "user_id" SERIAL NOT NULL,
@@ -33,6 +36,7 @@ CREATE TABLE "public"."orders" (
     "price" DECIMAL(65,30) NOT NULL,
     "volume" INTEGER NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "unit" "public"."UnitEnum" NOT NULL,
 
     CONSTRAINT "orders_pkey" PRIMARY KEY ("order_id")
 );

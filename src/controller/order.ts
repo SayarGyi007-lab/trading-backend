@@ -11,7 +11,7 @@ export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) 
         order_type: "BUY" | "SELL";
         price: number;
         volume: number;
-        unit: string,
+        unit:  "Kilogram" | "Item" | "Liter" | "Meter" | "Bag" | "Pack" | "Centimeter" | "Gram",
         timestamp: Date
     };
 
@@ -91,7 +91,7 @@ export const updateOrder = asyncHandler(async (req: AuthRequest, res: Response) 
         order_type?: "BUY" | "SELL";
         price?: number;
         volume?: number;
-        unit?: string
+        unit?:  "Kilogram" | "Item" | "Liter" | "Meter" | "Bag" | "Pack" | "Centimeter" | "Gram",
     };
 
     if (!orderId) {
