@@ -99,6 +99,7 @@ model Matching_table{
   price          Decimal  
   buy_price      Decimal?
   volume         Int
+  unit  UnitEnum
   timestamp      DateTime @default(now())
 
   @@map("matching_table")
