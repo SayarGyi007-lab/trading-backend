@@ -6,6 +6,7 @@ import userRoute from "./routes/user"
 import productRoute from "./routes/product"
 import orderRoute from "./routes/order"
 import matchingRoute from "./routes/matching"
+import errorHandler from "./middlewares/errorHandler"
 
 const app = express()
 
@@ -41,6 +42,8 @@ app.use("/user",userRoute)
 app.use("/product",productRoute)
 app.use('/order',orderRoute)
 app.use("/matching",matchingRoute)
+
+app.use(errorHandler)
 
 const PORT=process.env.PORT || 4000
 

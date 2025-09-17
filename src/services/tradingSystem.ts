@@ -100,7 +100,6 @@ export const processNewOrder = async (orderId: number) => {
     }
   }
 
-  // Update the new order volume after matching attempts
   await prisma.orders.update({
     where: { order_id: newOrder.order_id },
     data: { volume: remainingVolume }

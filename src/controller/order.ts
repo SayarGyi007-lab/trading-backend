@@ -193,7 +193,7 @@ export const getOrdersByUserId = asyncHandler(async (req: AuthRequest, res: Resp
             throw new Error("No orders found for this user");
         }
 
-        res.status(200).json({ count: orders.length, orders });
+        res.status(200).json({ orders });
     }
 
     res.status(403);
