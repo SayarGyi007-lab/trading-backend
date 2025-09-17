@@ -6,11 +6,12 @@ import { UserRole } from "../../generated/prisma";
 import { processNewOrder } from "../services/tradingSystem";
 
 export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const { product_name, order_type, price, volume, timestamp } = req.body as {
+    const { product_name, order_type, price, volume, timestamp, unit } = req.body as {
         product_name: string;
         order_type: "BUY" | "SELL";
         price: number;
         volume: number;
+        unit: string,
         timestamp: Date
     };
 
@@ -19,7 +20,7 @@ export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) 
         throw new Error("Unauthorized, user not found");
     }
 
-    if (!product_name || !order_type || !price || !volume) {
+    if (!product_name || !order_type || !price || !volume || !unit) {
         res.status(400);
         throw new Error("All fields are required");
     }
@@ -43,6 +44,7 @@ export const createOrder = asyncHandler(async (req: AuthRequest, res: Response) 
             order_type_id: orderType.order_type_id,
             price,
             volume,
+            unit,
             timestamp
         },
         include: {
@@ -84,11 +86,12 @@ export const deleteOrder = asyncHandler(async (req: AuthRequest, res: Response) 
 
 export const updateOrder = asyncHandler(async (req: AuthRequest, res: Response) => {
     const { orderId } = req.params;
-    const { product_name, order_type, price, volume } = req.body as {
+    const { product_name, order_type, price, volume, unit } = req.body as {
         product_name?: string;
         order_type?: "BUY" | "SELL";
         price?: number;
         volume?: number;
+        unit?: string
     };
 
     if (!orderId) {
@@ -138,6 +141,7 @@ export const updateOrder = asyncHandler(async (req: AuthRequest, res: Response) 
             order_type_id: orderTypeId,
             price: price ?? existingOrder.price,
             volume: volume ?? existingOrder.volume,
+            unit: unit ?? existingOrder.unit
         },
         include: {
             product: true,

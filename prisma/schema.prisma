@@ -61,6 +61,7 @@ model Orders{
   price Decimal
   volume Int
   timestamp DateTime @default(now())
+  unit String
 
   @@map("orders")
 }
