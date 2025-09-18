@@ -27,7 +27,7 @@ export const processNewOrder = async (orderId: number) => {
         price: { lt: newOrder.price },
         volume: { gt: 0 }
       },
-      orderBy: [{ price: "asc" }, { timestamp: "asc" }]
+      orderBy: [{ price: "desc" }, { timestamp: "asc" }, { volume: "desc" }]
     })
 
     for (const sell of sellOrders) {
@@ -67,7 +67,7 @@ export const processNewOrder = async (orderId: number) => {
         price: { gt: newOrder.price },
         volume: { gt: 0 }
       },
-      orderBy: [{ price: "desc" }, { timestamp: "asc" }]
+      orderBy: [{ price: "desc" }, { timestamp: "asc" }, { volume: "desc" }]
     })
 
     for (const buy of buyOrders) {
