@@ -7,8 +7,8 @@ export const getAllMatchings = asyncHandler(async(req:Request, res:Response)=>{
     const matchings = await prisma.matching_table.findMany({
         include: {
             product: { select: { name: true } },
-            seller: { select: { name: true } },
-            buyer: { select: { name: true } },
+            seller: { select: { name: true, phone: true } },
+            buyer: { select: { name: true, phone: true } },
         },
         orderBy: { timestamp: "desc" },
     });
@@ -31,8 +31,8 @@ export const getMatchingByUserId = asyncHandler(async (req: AuthRequest, res: Re
         },
         include: {
             product: { select: { name: true } },
-            seller: { select: { name: true } },
-            buyer: { select: { name: true } },
+            seller: { select: { name: true, phone: true } },
+            buyer: { select: { name: true, phone: true } },
         },
         orderBy: { timestamp: "desc" },
     });
